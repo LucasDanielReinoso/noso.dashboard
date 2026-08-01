@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Categorías</title>
+    <link type="image/png" sizes="16x16" rel="icon" href="favicon.png">
+    <link rel="manifest" href="manifest.json">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="NOSO">
+    <link rel="apple-touch-icon" href="icono.png">
+
+    <style>
+        :root {
+            --card-bg: rgba(8, 15, 33, 0.88);
+            --accent: #6d7cff;
+            --accent-2: #26d0ce;
+            --texto: #f7f9ff;
+        }
+
+        * { box-sizing: border-box; }
+
+        html {
+            min-height: 100%;
+            background: #040611;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                radial-gradient(circle at 15% 20%, rgba(109, 124, 255, 0.28), transparent 28%),
+                radial-gradient(circle at 85% 15%, rgba(38, 208, 206, 0.24), transparent 24%),
+                linear-gradient(135deg, #040611 0%, #0b1124 45%, #050814 100%);
+            background-attachment: fixed;
+            background-size: cover;
+            padding: 24px;
+            position: relative;
+            overflow-x: hidden;
+            overflow-y: auto;
+            color: var(--texto);
+        }
+
+        body::before,
+        body::after {
+            content: "";
+            position: fixed;
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.6;
+            animation: float 10s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+
+        body::before {
+            top: -80px;
+            left: -50px;
+            background: rgba(109, 124, 255, 0.35);
+        }
+
+        body::after {
+            right: -60px;
+            bottom: -60px;
+            background: rgba(38, 208, 206, 0.28);
+            animation-duration: 12s;
+        }
+
+        @keyframes float {
+            from { transform: translateY(0px) scale(1); }
+            to { transform: translateY(30px) scale(1.08); }
+        }
+
+        .container {
+            text-align: center;
+            max-width: 560px;
+            width: min(100%, 560px);
+            position: relative;
+            z-index: 1;
+            padding: 36px 32px;
+            border-radius: 28px;
+            background: linear-gradient(135deg, rgba(10, 18, 38, 0.94), rgba(6, 12, 28, 0.9));
+            border: 1px solid rgba(109, 124, 255, 0.28);
+            box-shadow: 0 18px 45px rgba(2, 8, 24, 0.45);
+            margin: auto 0;
+        }
+
+        h1 {
+            margin: 0 0 28px;
+            color: var(--texto);
+            font-weight: 700;
+            font-size: clamp(1.45rem, 2.2vw, 1.9rem);
+            line-height: 1.2;
+        }
+
+        /* ESTILOS DE IMÁGENES / ENLACES INFERIORES */
+        .images-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+        }
+
+        .category-link {
+            display: block;
+            width: 100%;
+            text-decoration: none;
+            border-radius: 18px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .category-img {
+            width: 100%;
+            height: auto;
+            border-radius: 18px;
+            border: none;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .category-link:hover .category-img {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 28px rgba(38, 208, 206, 0.35);
+        }
+
+        @media (max-width: 560px) {
+            .container {
+                padding: 24px 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Selecciona el equipo a cargar</h1>
+        
+        <!-- Galería de imágenes interactivas con redirección directa -->
+        <div class="images-container">
+            <a href="index_aires.html" class="category-link">
+                <img src="img-1-aire.png" alt="Aires Acondicionados" class="category-img">
+            </a>
+            <a href="index_heladera.html" class="category-link">
+                <img src="img-2-heladera.png" alt="Heladeras - Freezer" class="category-img">
+            </a>
+            <a href="index_lavarropas.html" class="category-link">
+                <img src="img-3-lavarropa.png" alt="Lavarropas - Otros" class="category-img">
+            </a>
+            <a href="questions.html" class="category-link">
+                <img src="img-4-preguntas.png" alt="Preguntas y Contacto" class="category-img">
+            </a>
+        </div>
+    </div>
+
+<!-- Guardián de seguridad -->
+<script type="module" src="auth-guard.js"></script>
+
+</body>
+</html>

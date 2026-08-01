@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmación • NOSO</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link type="image/png" sizes="16x16" rel="icon" href="favicon.png">
+
+    <style>
+        :root {
+            --bg: #040813;
+            --panel: rgba(13, 21, 40, 0.92);
+            --border: rgba(109, 124, 255, 0.25);
+            --text: #f7f9ff;
+            --muted: #93a1c4;
+            --accent: #6d7cff;
+            --accent-cyan: #26d0ce;
+            --success: #34d399;
+            --danger: #ff5a8a;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: 'Inter', system-ui, sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at 15% 20%, rgba(109, 124, 255, 0.3), transparent 28%),
+                radial-gradient(circle at 85% 80%, rgba(38, 208, 206, 0.25), transparent 28%),
+                linear-gradient(135deg, #030711 0%, #0a1022 50%, #050814 100%);
+            display: grid;
+            place-items: center;
+            padding: 20px;
+        }
+
+        .card {
+            width: min(100%, 460px);
+            padding: 40px 32px;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(16px);
+        }
+
+        .status-icon {
+            font-size: 3.5rem;
+            margin-bottom: 16px;
+            display: inline-block;
+        }
+
+        h1 {
+            font-size: 1.6rem;
+            margin: 0 0 12px;
+            background: linear-gradient(135deg, #ffffff, #a5f3fc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p {
+            color: var(--muted);
+            font-size: 0.98rem;
+            line-height: 1.5;
+            margin: 0 0 28px;
+        }
+
+        .btn-login {
+            display: inline-block;
+            width: 100%;
+            padding: 14px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-cyan));
+            color: #040813;
+            font-weight: 700;
+            text-decoration: none;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(38, 208, 206, 0.35);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div id="icon" class="status-icon">⏳</div>
+        <h1 id="title">Verificando cuenta...</h1>
+        <p id="message">Estamos validando tu correo electrónico. Un momento por favor.</p>
+        <a href="login.html" id="action-btn" class="btn-login" style="display: none;">Ir al inicio de sesión</a>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getAuth, applyActionCode } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+        import { firebaseConfig } from "./firebase-config.js";
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Obtener el código de verificación (oobCode) desde la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const actionCode = urlParams.get('oobCode');
+
+        const iconEl = document.getElementById('icon');
+        const titleEl = document.getElementById('title');
+        const messageEl = document.getElementById('message');
+        const actionBtn = document.getElementById('action-btn');
+
+        if (actionCode) {
+            applyActionCode(auth, actionCode)
+                .then(() => {
+                    iconEl.textContent = '✅';
+                    titleEl.textContent = '¡Correo verificado!';
+                    messageEl.textContent = 'Tu cuenta de NOSO ha sido activada correctamente. Ya puedes iniciar sesión y acceder a todas las funciones.';
+                    actionBtn.style.display = 'inline-block';
+                })
+                .catch((error) => {
+                    console.error(error);
+                    iconEl.textContent = '❌';
+                    titleEl.textContent = 'Enlace inválido o expirado';
+                    messageEl.textContent = 'El enlace de verificación ya fue utilizado o ha caducado. Vuelve al login para solicitar uno nuevo.';
+                    actionBtn.style.display = 'inline-block';
+                    actionBtn.textContent = 'Volver al login';
+                });
+        } else {
+            iconEl.textContent = '⚠️';
+            titleEl.textContent = 'Código no encontrado';
+            messageEl.textContent = 'No se encontró ningún código de verificación en la solicitud.';
+            actionBtn.style.display = 'inline-block';
+        }
+    </script>
+</body>
+</html>

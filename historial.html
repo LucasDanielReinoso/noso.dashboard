@@ -15,10 +15,6 @@
     <link rel="apple-touch-icon" href="image.png">
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Librerías para generación de PDF limpia y nativa -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
-
     <style>
         :root {
             --noso-azul: #315cf7;
@@ -574,362 +570,17 @@
             padding-right: 45px;
         }
 
-        /* --- ESTILOS MEJORADOS: CONTROL DE INSUMOS Y STOCK PRO --- */
-        .insumos-header-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .insumos-search-input {
-            width: 260px;
-            height: 38px;
-            padding: 0 14px;
-            border-radius: 999px;
-            background: rgba(7, 19, 33, 0.85);
-            border: 1px solid rgba(138, 166, 255, 0.25);
-            color: var(--texto);
-            font-size: 0.85rem;
-            outline: none;
-            font-family: inherit;
-        }
-
-        .insumos-kpi-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 14px;
-            margin-bottom: 18px;
-        }
-
-        .insumos-kpi-card {
-            background: rgba(7, 19, 33, 0.6);
-            border: 1px solid rgba(138, 166, 255, 0.2);
-            padding: 12px 18px;
-            border-radius: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .insumos-kpi-title {
-            font-size: 0.78rem;
-            color: var(--muted);
-            text-transform: uppercase;
-            font-weight: 700;
-            letter-spacing: 0.05em;
-        }
-
-        .insumos-kpi-value {
-            font-size: 1.3rem;
-            font-weight: 800;
-            color: #f5f7ff;
-        }
-
-        .insumos-tools-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .insumos-filter-chips {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .chip-btn {
-            background: rgba(7, 19, 33, 0.8);
-            border: 1px solid rgba(138, 166, 255, 0.25);
-            color: var(--muted);
-            padding: 6px 14px;
-            border-radius: 999px;
-            font-size: 0.82rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.25s ease;
-        }
-
-        .chip-btn:hover, .chip-btn.active {
-            background: var(--noso-azul);
-            color: #fff;
-            border-color: var(--noso-azul-claro);
-            box-shadow: 0 0 10px rgba(95, 124, 255, 0.3);
-        }
-
-        .insumos-pdf-actions {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .btn-pdf {
-            background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(180, 40, 40, 0.1));
-            border: 1px solid rgba(255, 107, 107, 0.4);
-            color: #fff;
-            padding: 6px 14px;
-            border-radius: 999px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .btn-pdf:hover {
-            background: var(--noso-rojo);
-            box-shadow: 0 0 12px rgba(255, 107, 107, 0.4);
-        }
-
-        .btn-pdf-all {
-            background: linear-gradient(135deg, rgba(49, 92, 247, 0.2), rgba(95, 124, 255, 0.1));
-            border: 1px solid rgba(138, 166, 255, 0.4);
-            color: #fff;
-            padding: 6px 14px;
-            border-radius: 999px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .btn-pdf-all:hover {
-            background: var(--noso-azul);
-            box-shadow: 0 0 12px rgba(95, 124, 255, 0.4);
-        }
-
-        .insumos-form-grid {
-            display: grid;
-            grid-template-columns: 2fr 1.2fr 1fr 1fr auto;
-            gap: 12px;
-            margin-bottom: 20px;
-            background: rgba(7, 19, 33, 0.5);
-            padding: 16px;
-            border-radius: 18px;
-            border: 1px solid rgba(138, 166, 255, 0.15);
-        }
-
-        .insumos-input, .insumos-select {
-            width: 100%;
-            height: 44px;
-            padding: 0 14px;
-            border-radius: 12px;
-            background: rgba(7, 19, 33, 0.85);
-            border: 1px solid rgba(138, 166, 255, 0.3);
-            color: var(--texto);
-            font-family: inherit;
-            font-size: 0.9rem;
-            outline: none;
-            transition: all 0.25s ease;
-        }
-
-        .insumos-select {
-            appearance: none;
-            -webkit-appearance: none;
-            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%232f5dff%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
-            background-repeat: no-repeat;
-            background-position: right 30px center;
-            background-size: 10px auto;
-            padding-right: 45px;
-        }
-
-        .insumos-input:focus, .insumos-select:focus {
-            border-color: var(--noso-azul-claro);
-            box-shadow: 0 0 12px rgba(95, 124, 255, 0.3);
-        }
-
-        .insumos-select option {
-            background-color: #071321;
-            color: var(--texto);
-        }
-
-        .btn-add-insumo {
-            height: 44px;
-            padding: 0 20px;
-            border-radius: 12px;
-            border: none;
-            background: linear-gradient(135deg, var(--noso-azul), var(--noso-azul-claro));
-            color: #fff;
-            font-weight: 700;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            white-space: nowrap;
-            box-shadow: 0 4px 14px rgba(49, 92, 247, 0.3);
-        }
-
-        .btn-add-insumo:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 18px rgba(49, 92, 247, 0.5);
-        }
-
-        .insumos-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 14px;
-        }
-
-        .insumo-card {
-            background: rgba(7, 19, 33, 0.7);
-            border: 1px solid rgba(138, 166, 255, 0.2);
-            border-radius: 16px;
-            padding: 14px 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            transition: all 0.25s ease;
-        }
-
-        .insumo-card:hover {
-            border-color: rgba(138, 166, 255, 0.45);
-            background: rgba(12, 28, 54, 0.8);
-        }
-
-        .insumo-detalles {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .insumo-nombre {
-            font-weight: 700;
-            font-size: 0.95rem;
-            color: #f5f7ff;
-        }
-
-        .insumo-meta {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .insumo-chip {
-            font-size: 0.72rem;
-            padding: 2px 8px;
-            border-radius: 999px;
-            background: rgba(95, 124, 255, 0.15);
-            color: var(--noso-azul-claro);
-            border: 1px solid rgba(138, 166, 255, 0.3);
-            font-weight: 600;
-        }
-
-        .stock-badge {
-            font-size: 0.72rem;
-            padding: 2px 8px;
-            border-radius: 999px;
-            font-weight: 700;
-        }
-        .stock-badge.normal {
-            background: rgba(34, 197, 94, 0.15);
-            color: var(--noso-verde);
-            border: 1px solid rgba(34, 197, 94, 0.3);
-        }
-        .stock-badge.bajo {
-            background: rgba(234, 179, 8, 0.15);
-            color: var(--noso-amarillo);
-            border: 1px solid rgba(234, 179, 8, 0.3);
-        }
-        .stock-badge.agotado {
-            background: rgba(255, 107, 107, 0.15);
-            color: var(--noso-rojo);
-            border: 1px solid rgba(255, 107, 107, 0.3);
-        }
-
-        .insumo-precio {
-            font-size: 0.8rem;
-            color: var(--muted);
-            font-weight: 600;
-        }
-
-        .insumo-acciones {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .btn-qty {
-            background: rgba(138, 166, 255, 0.12);
-            border: 1px solid rgba(138, 166, 255, 0.25);
-            color: #fff;
-            width: 28px;
-            height: 28px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 0.9rem;
-            transition: all 0.2s ease;
-        }
-
-        .btn-qty:hover {
-            background: var(--noso-azul);
-            border-color: var(--noso-azul-claro);
-        }
-
-        .btn-delete-insumo {
-            background: rgba(255, 107, 107, 0.12);
-            border: 1px solid rgba(255, 107, 107, 0.3);
-            color: var(--noso-rojo);
-            width: 32px;
-            height: 32px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.22s ease;
-            font-size: 0.9rem;
-            margin-left: 4px;
-        }
-
-        .btn-delete-insumo:hover {
-            background: var(--noso-rojo);
-            color: #fff;
-            transform: scale(1.08);
-            box-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
-        }
-
-        .sin-insumos {
-            grid-column: 1 / -1;
-            text-align: center;
-            color: var(--muted);
-            font-size: 0.9rem;
-            padding: 20px 0;
-        }
-
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-5px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        @media (max-width: 860px) {
-            .insumos-form-grid { grid-template-columns: 1fr 1fr; }
-            .btn-add-insumo { grid-column: span 2; }
-        }
-
         @media (max-width: 760px) {
-            .stats-grid, .bottom-grid, .insumos-kpi-grid { grid-template-columns: 1fr; }
+            .stats-grid, .bottom-grid { grid-template-columns: 1fr; }
             .container { padding: 20px; }
             .vencidos-banner { flex-direction: column; gap: 10px; text-align: center; }
             .vencimiento-item { flex-direction: column; align-items: flex-start; gap: 8px; }
             .btn-wsp { width: 100%; justify-content: center; }
-            .insumos-form-grid { grid-template-columns: 1fr; }
-            .btn-add-insumo { grid-column: span 1; }
-            .insumos-search-input { width: 100%; }
-            .insumos-tools-bar { flex-direction: column; align-items: stretch; }
         }
     </style>
 </head>
@@ -1068,71 +719,11 @@
         <h3 style="color: var(--noso-azul);">📈 Ingresos Mensuales</h3>
         <canvas id="miBarra" style="max-height: 320px;"></canvas>
     </div>
-
-    <!-- MÓDULO CONTROL DE INSUMOS Y STOCK PROFESIONAL -->
-    <div class="card" style="margin-top: 20px;" id="seccionInsumos">
-        <div class="insumos-header-bar">
-            <h3 style="color: var(--noso-azul); margin: 0;">📦 CONTROL DE STOCK E INSUMOS DE REFRIGERACIÓN</h3>
-            <input type="text" id="buscarInsumo" class="insumos-search-input" placeholder="🔍 Buscar insumo o categoría..." onkeyup="filtrarInsumosLocal()">
-        </div>
-
-        <!-- 1. KPI RESUMEN DE STOCK -->
-        <div class="insumos-kpi-grid">
-            <div class="insumos-kpi-card">
-                <span class="insumos-kpi-title">Inversión Total Acumulada</span>
-                <span id="kpiInversionTotal" class="insumos-kpi-value">$0.00</span>
-            </div>
-            <div class="insumos-kpi-card">
-                <span class="insumos-kpi-title">Variedad de Ítems en Stock</span>
-                <span id="kpiVariedadItems" class="insumos-kpi-value">0 productos</span>
-            </div>
-        </div>
-
-        <!-- 2. CHIPS DE FILTRO RÁPIDO Y EXPORTACIÓN PDF -->
-        <div class="insumos-tools-bar">
-            <div class="insumos-filter-chips">
-                <button class="chip-btn active" id="chipTodos" onclick="filtrarPorEstado('todos')">Todos</button>
-                <button class="chip-btn" id="chipAgotado" onclick="filtrarPorEstado('agotado')">🚨 Agotados</button>
-                <button class="chip-btn" id="chipBajo" onclick="filtrarPorEstado('bajo')">⚠️ Stock Bajo</button>
-            </div>
-            <div class="insumos-pdf-actions">
-                <button class="btn-pdf" onclick="generarPDFInsumos(true)">📄 Pedido Faltantes (PDF)</button>
-                <button class="btn-pdf-all" onclick="generarPDFInsumos(false)">📦 Stock Completo (PDF)</button>
-            </div>
-        </div>
-        
-        <form id="formInsumos" class="insumos-form-grid" onsubmit="event.preventDefault(); agregarInsumoFirebase();">
-            <input type="text" id="insumoNombre" class="insumos-input" placeholder="Nombre (Ej: Capacitor 35uF)" required>
-            
-            <select id="insumoCategoria" class="insumos-select" required>
-                <option value="">Categoría</option>
-                <option value="Capacitores">Capacitores</option>
-                <option value="Terminales">Terminales</option>
-                <option value="Sensores">Sensores</option>
-                <option value="Fusibles">Fusibles</option>
-                <option value="Varillas">Varillas</option>
-                <option value="Placas">Placas electrónicas</option>
-                <option value="Componentes">Componentes electrónicos</option>
-                <option value="Válvulas">Válvulas de servicio</option>
-                <option value="Otros">Otros</option>
-            </select>
-
-            <input type="number" id="insumoCantidad" class="insumos-input" placeholder="Unidades" min="0" value="1" required>
-
-            <input type="number" id="insumoPrecio" class="insumos-input" placeholder="Costo Est. ($)" min="0" step="0.01">
-
-            <button type="submit" id="btnAgregarInsumo" class="btn-add-insumo">+ Agregar Insumo</button>
-        </form>
-
-        <div id="contenedorInsumos" class="insumos-grid">
-            <div class="sin-insumos">Cargando stock desde la nube...</div>
-        </div>
-    </div>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, query, where, getDocs, addDoc, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
     import { firebaseConfig } from "./firebase-config.js";
 
@@ -1141,9 +732,6 @@
     const auth = getAuth(app);
 
     let datosGlobales = [];
-    let listaInsumosLocal = [];
-    let usuarioActual = null;
-    let estadoFiltroActual = 'todos';
     let miGrafico, miGraficoBarra;
 
     onAuthStateChanged(auth, async (user) => {
@@ -1153,27 +741,20 @@
             return;
         }
 
-        usuarioActual = user;
-
         try {
-            // Carga de Servicios desde Firestore
-            const qServicios = query(collection(db, "servicios"), where("uid", "==", user.uid));
-            const querySnapshotServicios = await getDocs(qServicios);
+            const q = query(collection(db, "servicios"), where("uid", "==", user.uid));
+            const querySnapshot = await getDocs(q);
 
             datosGlobales = [];
-            querySnapshotServicios.forEach(docSnap => {
-                datosGlobales.push(docSnap.data());
+            querySnapshot.forEach(doc => {
+                datosGlobales.push(doc.data());
             });
 
             renderizar(datosGlobales);
             calcularMantenimientosVencidos(datosGlobales);
             renderizarProximosVencimientos(datosGlobales);
-
-            // Carga de Insumos desde Firestore
-            await cargarInsumosFirebase();
-
         } catch (error) {
-            console.error("Error al obtener datos desde Firestore:", error);
+            console.error("Error al obtener el historial del usuario desde Firestore:", error);
         }
     });
 
@@ -1365,6 +946,7 @@
             </tr>`;
         });
 
+        // Actualizar Indicadores OPCIÓN 1
         const totalTipos = datos.length || 1;
         const pRep = Math.round((cReparaciones / totalTipos) * 100);
         const pMant = Math.round((cMantenimiento / totalTipos) * 100);
@@ -1379,10 +961,12 @@
         document.getElementById('pctInstalaciones').innerText = `${pInst}%`;
         document.getElementById('barInstalaciones').style.width = `${pInst}%`;
 
+        // Tarjetas Estadísticas
         document.getElementById('totalServicios').innerText = datos.length;
         document.getElementById('totalRecaudado').innerText = `$${sumaTotal.toLocaleString()}`;
         document.getElementById('promedioServicio').innerText = datos.length ? `$${Math.round(sumaTotal / datos.length).toLocaleString()}` : '$0';
 
+        // Gráfico Dona
         const ctx = document.getElementById('miTorta').getContext('2d');
         if (miGrafico) miGrafico.destroy();
         miGrafico = new Chart(ctx, {
@@ -1397,6 +981,7 @@
             options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
         });
 
+        // Gráfico Barras
         const ctxBar = document.getElementById('miBarra').getContext('2d');
         if (miGraficoBarra) miGraficoBarra.destroy();
 
@@ -1424,229 +1009,10 @@
             }
         });
     }
-
-    // --- LÓGICA CONECTADA A FIREBASE FIRESTORE PARA INSUMOS ---
-
-    async function cargarInsumosFirebase() {
-        if (!usuarioActual) return;
-        try {
-            const qInsumos = query(collection(db, "insumos"), where("uid", "==", usuarioActual.uid));
-            const querySnapshot = await getDocs(qInsumos);
-
-            listaInsumosLocal = [];
-            querySnapshot.forEach(docSnap => {
-                listaInsumosLocal.push({
-                    id: docSnap.id,
-                    ...docSnap.data()
-                });
-            });
-
-            aplicarFiltrosYRenderizar();
-        } catch (error) {
-            console.error("Error al cargar insumos desde Firebase:", error);
-        }
-    }
-
-    window.agregarInsumoFirebase = async () => {
-        const nombre = document.getElementById('insumoNombre').value.trim();
-        const categoria = document.getElementById('insumoCategoria').value;
-        const cantidad = parseInt(document.getElementById('insumoCantidad').value, 10) || 0;
-        const precio = parseFloat(document.getElementById('insumoPrecio').value) || 0;
-
-        if (!nombre || !categoria || !usuarioActual) return;
-
-        const nuevoInsumo = {
-            uid: usuarioActual.uid,
-            nombre,
-            categoria,
-            cantidad,
-            precio,
-            creadoEn: new Date().toISOString()
-        };
-
-        try {
-            const docRef = await addDoc(collection(db, "insumos"), nuevoInsumo);
-            listaInsumosLocal.push({ id: docRef.id, ...nuevoInsumo });
-
-            document.getElementById('insumoNombre').value = '';
-            document.getElementById('insumoCategoria').value = '';
-            document.getElementById('insumoCantidad').value = '1';
-            document.getElementById('insumoPrecio').value = '';
-
-            aplicarFiltrosYRenderizar();
-        } catch (error) {
-            console.error("Error al guardar el insumo en Firebase:", error);
-        }
-    };
-
-    window.cambiarCantidadLocal = async (id, delta) => {
-        const item = listaInsumosLocal.find(i => i.id === id);
-        if (item) {
-            const nuevaCantidad = Math.max(0, item.cantidad + delta);
-            item.cantidad = nuevaCantidad;
-
-            aplicarFiltrosYRenderizar();
-
-            try {
-                const insumoRef = doc(db, "insumos", id);
-                await updateDoc(insumoRef, { cantidad: nuevaCantidad });
-            } catch (error) {
-                console.error("Error al actualizar la cantidad en Firebase:", error);
-            }
-        }
-    };
-
-    window.borrarInsumoLocal = async (id) => {
-        if (!confirm("¿Estás seguro de que deseas eliminar este insumo de tu stock?")) return;
-
-        listaInsumosLocal = listaInsumosLocal.filter(i => i.id !== id);
-        aplicarFiltrosYRenderizar();
-
-        try {
-            await deleteDoc(doc(db, "insumos", id));
-        } catch (error) {
-            console.error("Error al eliminar el insumo de Firebase:", error);
-        }
-    };
-
-    window.filtrarInsumosLocal = () => {
-        aplicarFiltrosYRenderizar();
-    };
-
-    window.filtrarPorEstado = (estado) => {
-        estadoFiltroActual = estado;
-        
-        document.querySelectorAll('.chip-btn').forEach(btn => btn.classList.remove('active'));
-        if (estado === 'todos') document.getElementById('chipTodos').classList.add('active');
-        if (estado === 'agotado') document.getElementById('chipAgotado').classList.add('active');
-        if (estado === 'bajo') document.getElementById('chipBajo').classList.add('active');
-
-        aplicarFiltrosYRenderizar();
-    };
-
-    function aplicarFiltrosYRenderizar() {
-        const queryTexto = document.getElementById('buscarInsumo').value.toLowerCase().trim();
-        
-        let resultado = listaInsumosLocal.filter(i => 
-            i.nombre.toLowerCase().includes(queryTexto) || 
-            i.categoria.toLowerCase().includes(queryTexto)
-        );
-
-        if (estadoFiltroActual === 'agotado') {
-            resultado = resultado.filter(i => i.cantidad === 0);
-        } else if (estadoFiltroActual === 'bajo') {
-            resultado = resultado.filter(i => i.cantidad > 0 && i.cantidad <= 4);
-        }
-
-        renderizarKPIs();
-        renderizarInsumos(resultado);
-    }
-
-    function renderizarKPIs() {
-        let totalInversion = 0;
-        listaInsumosLocal.forEach(item => {
-            totalInversion += (item.cantidad * (item.precio || 0));
-        });
-
-        document.getElementById('kpiInversionTotal').innerText = `$${totalInversion.toLocaleString('es-AR', { minimumFractionDigits: 2 })}`;
-        document.getElementById('kpiVariedadItems').innerText = `${listaInsumosLocal.length} producto${listaInsumosLocal.length === 1 ? '' : 's'}`;
-    }
-
-    function renderizarInsumos(lista) {
-        const contenedor = document.getElementById('contenedorInsumos');
-        if (!lista || lista.length === 0) {
-            contenedor.innerHTML = `<div class="sin-insumos">No hay insumos registrados en el stock actual.</div>`;
-            return;
-        }
-
-        contenedor.innerHTML = lista.map(item => {
-            let badgeClass = 'normal';
-            let badgeText = '🟢 Stock Normal';
-
-            if (item.cantidad === 0) {
-                badgeClass = 'agotado';
-                badgeText = '🚨 Agotado';
-            } else if (item.cantidad <= 4) {
-                badgeClass = 'bajo';
-                badgeText = '⚠️ Stock Bajo';
-            }
-
-            const precioText = item.precio ? `$${item.precio.toLocaleString()} c/u` : 'Sin precio';
-
-            return `
-                <div class="insumo-card" id="insumo-${item.id}">
-                    <div class="insumo-detalles">
-                        <span class="insumo-nombre">${item.nombre}</span>
-                        <div class="insumo-meta">
-                            <span class="insumo-chip">${item.categoria}</span>
-                            <span class="stock-badge ${badgeClass}">${badgeText}</span>
-                        </div>
-                        <span class="insumo-precio">Cant: ${item.cantidad} u. • ${precioText}</span>
-                    </div>
-                    <div class="insumo-acciones">
-                        <button class="btn-qty" onclick="cambiarCantidadLocal('${item.id}', -1)" title="Restar 1">-</button>
-                        <button class="btn-qty" onclick="cambiarCantidadLocal('${item.id}', 1)" title="Sumar 1">+</button>
-                        <button class="btn-delete-insumo" onclick="borrarInsumoLocal('${item.id}')" title="Eliminar insumo">🗑️</button>
-                    </div>
-                </div>
-            `;
-        }).join('');
-    }
-
-    // GENERADOR PDF PARA STOCK / PEDIDOS
-    window.generarPDFInsumos = (soloFaltantes) => {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-
-        let datosPDF = soloFaltantes 
-            ? listaInsumosLocal.filter(i => i.cantidad <= 4)
-            : [...listaInsumosLocal];
-
-        if (datosPDF.length === 0) {
-            alert(soloFaltantes ? "¡Excelente! No tienes insumos agotados o con stock bajo para pedir." : "No hay insumos registrados para exportar.");
-            return;
-        }
-
-        const titulo = soloFaltantes ? "LISTA DE COMPRAS Y PEDIDOS - NOSO REFRIGERACIÓN" : "INVENTARIO COMPLETO DE STOCK - NOSO REFRIGERACIÓN";
-        const fechaActual = new Date().toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' });
-
-        doc.setFontSize(16);
-        doc.setTextColor(49, 92, 247);
-        doc.text(titulo, 14, 20);
-
-        doc.setFontSize(10);
-        doc.setTextColor(100);
-        doc.text(`Fecha de emisión: ${fechaActual}`, 14, 28);
-
-        const filas = datosPDF.map(i => {
-            let estado = "NORMAL";
-            if (i.cantidad === 0) estado = "AGOTADO";
-            else if (i.cantidad <= 4) estado = "STOCK BAJO";
-
-            return [
-                i.nombre,
-                i.categoria,
-                `${i.cantidad} u.`,
-                i.precio ? `$${i.precio.toLocaleString()}` : '-',
-                estado
-            ];
-        });
-
-        doc.autoTable({
-            startY: 34,
-            head: [['Insumo / Repuesto', 'Categoría', 'Cantidad', 'Costo Est. ($)', 'Estado']],
-            body: filas,
-            theme: 'grid',
-            headStyles: { fillColor: [49, 92, 247], textColor: 255, fontStyle: 'bold' },
-            styles: { fontSize: 9 }
-        });
-
-        const nombreArchivo = soloFaltantes ? `pedido_insumos_${Date.now()}.pdf` : `stock_completo_${Date.now()}.pdf`;
-        doc.save(nombreArchivo);
-    };
 </script>
 
 <script type="module" src="auth-guard.js"></script>
+
 
 </body>
 </html>

@@ -2,8 +2,8 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Preguntas Frecuentes y Contacto • NOSO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preguntas Frecuentes y Contacto</title>
     <link type="image/png" sizes="16x16" rel="icon" href="favicon.png">
     <link rel="manifest" href="manifest.json">
 
@@ -23,7 +23,7 @@
             --texto-muted: #94a3b8;
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * { box-sizing: border-box; }
 
         html {
             min-height: 100%;
@@ -34,7 +34,6 @@
             font-family: 'Segoe UI', Roboto, -apple-system, sans-serif;
             margin: 0;
             min-height: 100vh;
-            min-height: 100dvh;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -80,14 +79,14 @@
         }
 
         .header-section h1 {
-            margin: 0 0 8px;
-            font-size: clamp(1.6rem, 2.5vw, 2.1rem);
-            font-weight: 700;
-            background: linear-gradient(135deg, #ffffff, #a5f3fc);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+    margin: 0 0 8px;
+    font-size: clamp(1.6rem, 2.5vw, 2.1rem);
+    font-weight: 700;
+    background: linear-gradient(135deg, #ffffff, #a5f3fc);
+    -webkit-background-clip: text;
+    background-clip: text; /* <--- Agregamos la propiedad estándar */
+    -webkit-text-fill-color: transparent;
+}
 
         .header-section p {
             margin: 0;
@@ -135,18 +134,16 @@
             font-size: 1.2rem;
             transition: transform 0.3s ease;
             color: var(--accent-cyan);
-            margin-left: 10px;
-            flex-shrink: 0;
         }
 
         .faq-answer {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s ease;
+            transition: max-height 0.3s ease-out, padding 0.3s ease;
             background: rgba(8, 14, 28, 0.4);
             color: var(--texto-muted);
-            font-size: 0.94rem;
-            line-height: 1.6;
+            font-size: 0.92rem;
+            line-height: 1.5;
             padding: 0 20px;
         }
 
@@ -245,11 +242,7 @@
         .btn-back:hover { opacity: 0.8; }
 
         @media (max-width: 560px) {
-            body { padding: 12px; }
-            .container { padding: 22px 16px; border-radius: 20px; }
-            .faq-question { font-size: 0.92rem; padding: 14px 16px; }
-            .faq-answer { font-size: 0.88rem; padding: 0 16px; }
-            .faq-item.active .faq-answer { padding: 10px 16px 16px 16px; }
+            .container { padding: 24px 18px; }
         }
     </style>
 </head>
@@ -269,11 +262,11 @@
             <!-- Slot 1 -->
             <div class="faq-item">
                 <button class="faq-question">
-                    <span>1. ¿Con qué frecuencia debo realizar el mantenimiento preventivo?</span>
+                    <span>1. ¿Con qué frecuencia debo realizar el mantenimiento preventiva?</span>
                     <span class="icon">+</span>
                 </button>
                 <div class="faq-answer">
-                    Se recomienda realizar la revisión y limpieza de los equipos de refrigeración al menos una vez al año (o cada 6 meses en uso comercial intensivo) para evitar fallas graves, mantener la eficiencia energética y extender considerablemente su vida útil.
+                    Se recomienda realizar la revisión y limpieza de los equipos de refrigeración al menos una vez al año (o cada 6 meses en uso comercial intensivo) para evitar fallas graves y extender su vida útil.
                 </div>
             </div>
 
@@ -284,125 +277,95 @@
                     <span class="icon">+</span>
                 </button>
                 <div class="faq-answer">
-                    Incluye presurización con nitrógeno para prueba de hermeticidad, localización y reparación de fugas, vacío profundo del circuito con bomba de dos etapas y carga exacta por peso con balanza digital según las especificaciones técnicas del fabricante.
+                    Incluye presurización con nitrógeno para prueba de hermeticidad, presurizado y detección de fugas, vacío del circuito con bomba y carga exacta por peso según especificaciones del fabricante.
                 </div>
             </div>
 
             <!-- Slot 3 -->
             <div class="faq-item">
                 <button class="faq-question">
-                    <span>3. ¿Qué indica una presión de succión baja y una presión de descarga alta al mismo tiempo?</span>
+                    <span>3. Escribe tu pregunta aquí (Slot 3)</span>
                     <span class="icon">+</span>
                 </button>
-                <div class="faq-answer">Suele indicar un flujo de aire deficiente en el condensador (suciedad, forzador detenido) combinado con una posible sobrecarga de refrigerante o incondensables (aire) en el circuito.</div>
+                <div class="faq-answer">
+                    Escribe manualmente la respuesta correspondiente para este slot aquí.
+                </div>
             </div>
 
             <!-- Slot 4 -->
             <div class="faq-item">
                 <button class="faq-question">
-                    <span>4. ¿Cómo se diagnostica un filtro deshidratador obstruido?</span>
+                    <span>4. Escribe tu pregunta aquí (Slot 4)</span>
                     <span class="icon">+</span>
                 </button>
                 <div class="faq-answer">
-                    Midiendo la diferencia de temperatura entre la entrada y la salida del filtro. Si hay una caída de temperatura apreciable (el filtro se siente frío a la salida o transpirado), significa que hay una restricción interna generando una expansión no deseada.
+                    Escribe manualmente la respuesta correspondiente para este slot aquí.
                 </div>
             </div>
 
             <!-- Slot 5 -->
             <div class="faq-item">
                 <button class="faq-question">
-                    <span>5. ¿Qué es el recalentamiento (superheat) y para qué sirve medirlo?</span>
+                    <span>5. Escribe tu pregunta aquí (Slot 5)</span>
                     <span class="icon">+</span>
                 </button>
                 <div class="faq-answer">
-                    Es la diferencia entre la temperatura real de la línea de succión y la temperatura de saturación (evaporación) del refrigerante a esa misma presión. Sirve para verificar la carga correcta de refrigerante en sistemas con tubo capilar y asegurarnos de que no llegue refrigerante líquido al compresor, evitando golpes de líquido.
+                    Escribe manualmente la respuesta correspondiente para este slot aquí.
                 </div>
             </div>
 
             <!-- Slot 6 -->
             <div class="faq-item">
                 <button class="faq-question">
-                    <span>6. ¿Por qué es indispensable realizar el vacío con una bomba de doble etapa e indicador de micrones, y no con un compresor adaptado?</span>
+                    <span>6. Escribe tu pregunta aquí (Slot 6)</span>
                     <span class="icon">+</span>
                 </button>
                 <div class="faq-answer">
-                    Un compresor no logra romper la tensión de vapor ni alcanza los niveles de vacío necesarios (menos de 500 micrones) para evaporar la humedad interna. Además, la humedad residual junto con el refrigerante y el aceite sintetiza ácidos que destruyen el aislante del bobinado.
+                    Escribe manualmente la respuesta correspondiente para este slot aquí.
                 </div>
             </div>
 
             <!-- Slot 7 -->
             <div class="faq-item">
                 <button class="faq-question">
-                    <span>7. ¿Qué síntoma presenta un sistema con falta de refrigerante (fuga) comparado con uno con evaporador sucio?</span>
+                    <span>7. Escribe tu pregunta aquí (Slot 7)</span>
                     <span class="icon">+</span>
                 </button>
                 <div class="faq-answer">
-                    Falta de refrigerante: Tanto la presión de succión como la de descarga están bajas; el recalentamiento es alto.
-
-Evaporador sucio: La presión de succión es baja, pero el recalentamiento es bajo o cercano a cero, con riesgo de retorno de líquido.
+                    Escribe manualmente la respuesta correspondiente para este slot aquí.
                 </div>
             </div>
 
             <!-- Slot 8 -->
             <div class="faq-item">
                 <button class="faq-question">
-                    <span>8. ¿Qué causa que un compresor intente arrancar, consuma alto amperaje (LRA) y corte por protector térmico?</span>
+                    <span>8. Escribe tu pregunta aquí (Slot 8)</span>
                     <span class="icon">+</span>
                 </button>
                 <div class="faq-answer">
-                    Puede deberse a un capacitor de arranque o marcha desvalorizado/defectuoso, un relé de arranque trabado, presiones no igualadas antes del arranque, bajo voltaje en la red eléctrica, o un agarrotamiento mecánico interno del compresor.
+                    Escribe manualmente la respuesta correspondiente para este slot aquí.
                 </div>
             </div>
 
             <!-- Slot 9 -->
             <div class="faq-item">
                 <button class="faq-question">
-                    <span>9. ¿Por qué no se debe presurizar un sistema de refrigeración con aire comprimido u oxígeno?</span>
+                    <span>9. Escribe tu pregunta aquí (Slot 9)</span>
                     <span class="icon">+</span>
                 </button>
                 <div class="faq-answer">
-                    El oxígeno a alta presión mezclado con aceite mineral o sintético puede causar una explosión violenta. El aire comprimido introduce grandes cantidades de humedad e incondensables. Siempre se debe utilizar nitrógeno seco (N2).
+                    Escribe manualmente la respuesta correspondiente para este slot aquí.
                 </div>
             </div>
 
             <!-- Slot 10 -->
             <div class="faq-item">
                 <button class="faq-question">
-                    <span>10. ¿Cuáles son los principales factores externos e internos que afectan las presiones de trabajo (succión y descarga) en un equipo de refrigeración, y qué efecto produce cada uno?</span>
+                    <span>10. Escribe tu pregunta aquí (Slot 10)</span>
                     <span class="icon">+</span>
                 </button>
                 <div class="faq-answer">
-                    Temperatura del aire externo / medio condensador:
-
-Efecto: Si la temperatura ambiental sube, la presión de descarga (alta) aumenta proporcionalmente porque al refrigerante le cuesta más ceder calor al entorno. Si la temperatura exterior baja mucho, la presión de alta cae.
-
-Carga de térmico o flujo de aire en el evaporador:
-
-Efecto: Una temperatura alta en el recinto/alimento a enfriar o un flujo de aire deficiente (filtros o serpentín sucios, forzador lento) altera la presión de succión (baja).
-
-Mayor carga térmica: Sube la presión de baja.
-
-Falta de aire o serpentín tapado/con hielo: La presión de baja cae drásticamente por falta de intercambio de calor.
-
-Cantidad de refrigerante (fuga o sobrecarga):
-
-Efecto:
-
-Falta de gas: Bajan ambas presiones (baja y alta) y sube el recalentamiento.
-
-Exceso de gas: Suben ambas presiones (especialmente la de descarga) y disminuye el subenfriamiento/recalentamiento.
-
-Obstrucciones mecánicas en el circuito (Filtro o Capilar/VET):
-
-Efecto: Generan una restricción. La presión de succión cae a valores muy bajos (incluso vacío) mientras que la presión de alta puede mantenerse normal o subir ligeramente en la zona previa al taponamiento.
-
-Presencia de gases incondensables (aire/humedad en el sistema):
-
-Efecto: El aire no se condensa y ocupa espacio en el condensador, lo que hace que la presión de descarga (alta) se eleve de forma anormal e inestable, acompañada de oscilaciones en la aguja del manómetro.
-
-Rendimiento mecánico del compresor (descompresión):
-
-Efecto: Si las válvulas/flappers del compresor están dañadas, el equipo no logra comprimir eficientemente. La presión de succión sube y la presión de descarga baja, tendiendo a igualarse.
+                    Escribe manualmente la respuesta correspondiente para este slot aquí.
                 </div>
             </div>
 
@@ -429,41 +392,22 @@ Efecto: Si las válvulas/flappers del compresor están dañadas, el equipo no lo
     </div>
 
     <script>
-        // Lógica mejorada del Acordeón para respuestas de tamaño adaptable dinámico
+        // Lógica del Acordeón para desplegar preguntas
         document.querySelectorAll('.faq-question').forEach(button => {
             button.addEventListener('click', () => {
                 const faqItem = button.parentElement;
                 const answer = faqItem.querySelector('.faq-answer');
-                const isOpening = !faqItem.classList.contains('active');
 
-                // Cierra los demás elementos abiertos
-                document.querySelectorAll('.faq-item').forEach(item => {
-                    if (item !== faqItem && item.classList.contains('active')) {
-                        const openAnswer = item.querySelector('.faq-answer');
-                        openAnswer.style.maxHeight = openAnswer.scrollHeight + "px";
-                        setTimeout(() => {
-                            openAnswer.style.maxHeight = "0px";
-                        }, 10);
+                if (faqItem.classList.contains('active')) {
+                    faqItem.classList.remove('active');
+                    answer.style.maxHeight = null;
+                } else {
+                    document.querySelectorAll('.faq-item').forEach(item => {
                         item.classList.remove('active');
-                    }
-                });
-
-                if (isOpening) {
+                        item.querySelector('.faq-answer').style.maxHeight = null;
+                    });
                     faqItem.classList.add('active');
                     answer.style.maxHeight = answer.scrollHeight + "px";
-
-                    // Permite que el cuadro sea de tamaño libre infinito una vez terminada la animación
-                    setTimeout(() => {
-                        if (faqItem.classList.contains('active')) {
-                            answer.style.maxHeight = "none";
-                        }
-                    }, 350);
-                } else {
-                    answer.style.maxHeight = answer.scrollHeight + "px";
-                    setTimeout(() => {
-                        answer.style.maxHeight = "0px";
-                    }, 10);
-                    faqItem.classList.remove('active');
                 }
             });
         });
@@ -472,7 +416,7 @@ Efecto: Si las válvulas/flappers del compresor están dañadas, el equipo no lo
         const textarea = document.getElementById('user-message');
         const charCount = document.getElementById('char-count');
 
-        textarea?.addEventListener('input', () => {
+        textarea.addEventListener('input', () => {
             charCount.textContent = textarea.value.length;
         });
     </script>

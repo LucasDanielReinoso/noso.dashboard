@@ -19,7 +19,7 @@
         <table class="header-table">
             <tr>
                 <td>
-                    <div class="brand-title">NOSO</div>
+                    <div class="brand-title" id="brandTitle">NOSO</div>
                     <div class="brand-subtitle">Refrigeración & Climatización</div>
                 </td>
                 <td>
@@ -47,12 +47,11 @@
             <td class="field-label">Ubicación Eq.</td>
             <td class="field-value"><input type="text" id="ubicacion" class="input-table"></td>
         </tr>
-        <!-- AQUI CORREGIMOS: Agregamos Presupuesto y Categoría -->
         <tr>
             <td class="field-label">Presupuesto ($)</td>
             <td class="field-value"><input type="number" id="presupuesto" class="input-table" placeholder="Ej: 45000"></td>
             <td class="field-label">Categoría</td>
-            <td class="field-value"><input type="text" id="categoria" class="input-table" value="Heladeras - Frizzer"></td>
+            <td class="field-value"><input type="text" id="categoria" class="input-table" value="Mantenimiento - Instalación - Reparación"></td>
         </tr>
     </table>
 
@@ -77,7 +76,6 @@
                 <label class="label-check"><input type="checkbox" class="custom-check"> R134a</label>
             </td>
         </tr>
-        <!-- AQUI MOVIMOS LOS IDs FALTANTES DE CAPACIDAD Y SERIE -->
         <tr>
             <td class="field-label">Capacidad</td>
             <td class="field-value"><input type="text" id="capacidad" class="input-table" placeholder="Frigorías / Watts"></td>
@@ -198,32 +196,95 @@
         <a href="historial.html" class="btn-historial">Ver Historial</a>
     </div>
 
-    <script type="module">
+<script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
     import { firebaseConfig } from "./firebase-config.js";
 
+    // 1. Inicialización
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    const auth = getAuth(app);
 
-    // Asignamos a window para que el onclick del botón la encuentre
+    // Auto-completar la fecha de hoy en formato DD/MM/YYYY si el input está vacío
+    document.addEventListener("DOMContentLoaded", () => {
+        const fechaInput = document.getElementById('fecha');
+        if (fechaInput && !fechaInput.value) {
+            const hoy = new Date();
+            const dia = String(hoy.getDate()).padStart(2, '0');
+            const mes = String(hoy.getMonth() + 1).padStart(2, '0');
+            const anio = hoy.getFullYear();
+            fechaInput.value = `${dia}/${mes}/${anio}`;
+        }
+    });
+
+    // 2. Inyección de marca/empresa
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            try {
+                const userDocRef = doc(db, "users", user.uid);
+                const userDocSnap = await getDoc(userDocRef);
+
+                if (userDocSnap.exists()) {
+                    const userData = userDocSnap.data();
+                    const nombreEmpresa = userData.companyName || userData.profession;
+
+                    if (nombreEmpresa) {
+                        const brandEl = document.querySelector(".brand-title");
+                        if (brandEl) brandEl.textContent = nombreEmpresa;
+                    }
+                }
+            } catch (err) {
+                console.error("Error al obtener datos del usuario:", err);
+            }
+        }
+    });
+
+    // 3. Función global para Guardar en Firestore e Imprimir
     window.guardarYImprimir = async function() {
+        const user = auth.currentUser;
+        if (!user) {
+            alert("No hay una sesión activa. Por favor, inicia sesión nuevamente.");
+            window.location.href = "login.html";
+            return;
+        }
+
+        const fechaVal = document.getElementById('fecha')?.value || "";
+        const clienteVal = document.getElementById('cliente')?.value || "";
+        const categoriaVal = document.getElementById('categoria')?.value || "";
+        const marcaVal = document.getElementById('marca')?.value || "";
+        const presupuestoVal = document.getElementById('presupuesto')?.value || 0;
+
+        if (!clienteVal) {
+            alert("Por favor, ingrese al menos el nombre del cliente.");
+            return;
+        }
+
         try {
             await addDoc(collection(db, "servicios"), {
-                fecha: document.getElementById('fecha').value,
-                cliente: document.getElementById('cliente').value,
-                categoria: document.getElementById('categoria').value,
-                marca: document.getElementById('marca').value,
-                presupuesto: document.getElementById('presupuesto').value,
+                uid: user.uid,
+                userEmail: user.email,
+                fecha: fechaVal,
+                cliente: clienteVal,
+                categoria: categoriaVal,
+                marca: marcaVal,
+                presupuesto: presupuestoVal,
                 timestamp: new Date().toISOString()
             });
+
+            // Abrir el diálogo de impresión / Guardar PDF
             window.print();
         } catch (e) {
-            console.error("Error:", e);
-            alert("Error al guardar: " + e.message);
+            console.error("Error al guardar el servicio en Firestore:", e);
+            alert("Error al guardar en el historial: " + e.message);
         }
     };
 </script>
+
+<!-- Guardián de seguridad (dejamos uno solo) -->
+<script type="module" src="auth-guard.js"></script>
+
 
 </div>
 </body>
